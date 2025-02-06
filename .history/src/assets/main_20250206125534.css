@@ -217,7 +217,7 @@
 
 
 .main{
-  /* background: linear-gradient(135deg, #153677, #4e085f); */
+  background: linear-gradient(135deg, #153677, #4e085f);
   background-image: url('images\Background.png');
   background-size: cover;
 
