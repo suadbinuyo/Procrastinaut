@@ -217,15 +217,15 @@
 
 
 .main{
-   /* background: linear-gradient(135deg, #153677, #4e085f);  */
-  background-image: url('/images/Background.png');
+  /* background: linear-gradient(135deg, #153677, #4e085f); 
+   background-image: url('./images/Background.png'); */
   background-size: cover;
 
 }
 
 .bg_img{
   background-size: cover;
-  align-items: center;
+  display: center;
   z-index: 1;
 
 }
