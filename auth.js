@@ -1,24 +1,6 @@
  // Import the functions you need from the SDKs you need
- import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-
- import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
- import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-
- // TODO: Add SDKs for Firebase products that you want to use
- // https://firebase.google.com/docs/web/setup#available-libraries
-
- // Your web app's Firebase configuration
- // For Firebase JS SDK v7.20.0 and later, measurementId is optional
- const firebaseConfig = {
-   apiKey: "AIzaSyBdDUUJKgBgSyV6bL9Qrw93BWzjEODZjtI",
-   authDomain: "first-project-dc60b.firebaseapp.com",
-   projectId: "first-project-dc60b",
-   storageBucket: "first-project-dc60b.firebasestorage.app",
-   messagingSenderId: "692391873078",
-   appId: "1:692391873078:web:12ec161a69cbee938a2697",
-   measurementId: "G-8WM43P61Z6"
- };
-
+ 
+ 
  // Initialize Firebase
  const app = initializeApp(firebaseConfig);
 
