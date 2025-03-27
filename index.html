@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<link rel= "stylesheet" href="src/assets/main.css">
+
+<html lang="">
+  <head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procrastinaut !</title>
+  </head>
+  <body>
+    
+    <nav class="navbar">
+      <div class="navbarContainer">
+        <a href="#" id="navLogo">PROCRASTINAUT</a>
+        <div class="navbarToggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbarMenu">
+          <li class="navbarItem">
+            <a href="./index.html" class="navbarLinks">Home</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./todolist.html" class="navbarLinks">To Do List</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./calendar.html" class="navbarLinks">Calendar</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
+          </li>
+          
+          <li class="navbarItem">
+            <a href="./notePad.html" class="navbarLinks">Note Pad</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./about.html" class="navbarLinks">About Us</a>
+          </li>
+
+          <li class="navbarBtn logged-out">
+            <a href="#" class="button open-modal" data-modal="signup" id="signup-btn">Sign up</a>
+          </li>
+
+          <li class="navbarBtn logged-out">
+            <a href="#" class="button open-modal" data-modal="login" id="login-btn">Login</a>
+          </li>
+
+          <li class="navbarBtn logged-in">
+            <a href="#" class="button logout-button" id="logout">Logout</a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+   
+   <!--Sign up modal-->
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h4>Sign up</h4><br />
+        <form id="signup-form">
+          <div class="input-field">
+            <input type="email" id="signup-email" required />
+            <label for="signup-email">Email address</label>
+          </div>
+          <div class="input-field">
+            <input type="password" id="signup-password" required />
+            <label for="signup-password">Choose password</label>
+          </div>
+          <button class="modal-btn">Sign up</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Log in modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h4>Log in</h4><br />
+        <form id="login-form">
+          <div class="input-field">
+            <input type="email" id="login-email" required />
+            <label for="login-email">Email address</label>
+          </div>
+          <div class="input-field">
+            <input type="password" id="login-password" required />
+            <label for="login-password">Your password</label>
+          </div>
+          <button class="modal-btn">Log in</button>
+        </form>
+      </div>
+    </div>
+
+<!--Images-->
+
+    <div class="main">
+      <div class="mainContainer">
+        <div class="mainContent">
+          <h1>PROCRASTINAUT</h1>
+          <p>Launch into productivity!</p>
+          <button class="mainBtn open-modal" data-modal="signup"><a href="#" >Get Started</a></button>
+        </div>
+        <div class="mainImgContainer"></div>
+        <img src="images/astroguy.png" alt="Astronaut" id="Main" class="mainImg">
+       
+      </div>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="auth.js"></script>
+  </body>
+
+
+
+<!--script for the signup and log in modals -->
+<script>
+  document.addEventListener("DOMContentLoaded", function (){
+    const	modals = {
+      signup: document.getElementById("signup-modal"),
+      login: document.getElementById("login-modal")
+    };
+
+    const openModalBtns = document.querySelectorAll(".open-modal");
+
+    const closeModalBtns = document.querySelectorAll(".close-modal");
+
+    openModalBtns.forEach(button => {
+      button.addEventListener("click", function (event){
+        event.preventDefault();
+
+        const targetModal = button.getAttribute("data-modal");
+        if(modals[targetModal]){
+          modals[targetModal].classList.add("show");
+
+        }
+      });
+    });
+
+    closeModalBtns.forEach(button =>{
+      button.addEventListener("click", function (){
+        const modal = button.closest(".modal");
+        if(modal){
+          modal.classList.remove("show");
+        }
+
+      });
+    });
+
+    window.addEventListener("click", function(event){
+      Object.values(modals).forEach(modal =>{
+        if(event.target === modal){
+          modal.classList.remove("show");
+        }
+      });
+    });
+      
+  });
+
+
+</script>
+
+
+<!--  script for drop down menu when page resizes-->
+<script>
+  const menu = document.querySelector('#mobile-menu')
+const menuLinks = document.querySelector('.navbarMenu')
+
+
+menu.addEventListener('click', function(){
+    menu.classList.toggle('is-active');
+    menuLinks.classList.toggle('active');
+});
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel= "stylesheet" href="src/assets/toDoList.css">
+
+        <html lang="">
+          <head>
+            <meta charset="UTF-8">
+          
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Procrastinaut !</title>
+          </head>   
+          
+        <body>
+            
+           <div class="toDoListContainer">
+                <div class="toDoList">
+                    <h2>To Do List <img src="images/icon.png"></h2>
+                    <div class="toDoListRow">
+                        <input type ="text" id="taskInput" placeholder="Add a task">
+                        <button class="toDoListBtn">Add</button>
+
+                    </div>
+                    <ul id="tasksContainer"></ul>
+
+
+                </div>
+           </div>
+           <script type="module" src="auth.js"></script>
+
+           <!-- to do list data initially stored on local storage  -->
+     <!-- <script >
+        const input = document.getElementById("taskInput");
+        const listContainer = document.getElementById("tasksContainer");
+
+
+
+function addTask(){
+    if(input.value ===''){
+        alert("Please add a task !");
+    }
+    else{
+        let li = document.createElement("li");
+        li.innerHTML= input.value;
+        listContainer.appendChild(li);
+        let span = document.createElement("span");
+        span.innerHTML = "\u00d7";
+        li.appendChild(span);
+    }
+
+    input.value= "";
+    saveData();
+    
+}
+
+listContainer.addEventListener("click", function(e){
+    if(e.target.tagName === "LI"){
+        e.target.classList.toggle("checked");
+        saveData();
+    }
+    else if(e.target.tagName === "SPAN"){
+        e.target.parentElement.remove();
+        saveData();
+    }
+}, false);
+
+function saveData(){
+    localStorage.setItem("data", listContainer.innerHTML)
+}
+
+function showTasks(){
+    listContainer.innerHTML = localStorage.getItem("data");
+}
+
+showTasks();
+     </script>    -->
+    </body>
+</html>
