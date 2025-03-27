@@ -1,0 +1,367 @@
+	@font-face {
+		font-family: 'mokoto'; 
+		src: url('Mokoto-Regular.ttf');
+		} 
+
+:root{
+	--base-background-image:url('Background.png');
+	--base-color: #7B68CD;
+	--text-color: 
+	
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+	font-family: 'mokoto', comic-sans;	
+	color: #4fe4ff;
+		}
+
+body {
+    background-image: url('images/Background.png');
+	background-repeat: no-repeat;
+	background-color: #7B68CD;
+}
+
+.wrapper {
+    margin: 50px;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, 250px);
+}
+
+.wrapper li {
+    height: 250px;
+    list-style: none;
+    background: white;
+	justify-content:center;
+    border-radius: 5px;
+    padding: 15px 20px 20px
+}
+
+.wrapper .note {
+    display: flex;
+	/*overflow-y: auto;
+	overflow-x: auto;
+    /*background-image: url('Container.png');*/
+	background-color: #00677a;
+	background-size: contain;
+	background-repeat: no-repeat;
+	/*text-wrap: wrap;*/
+	background-position: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.add-box,
+.icon,
+.bottom-content,
+.settings .menu li,
+.content header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bottom-content span {
+    font-size: 568px;
+	color: pink
+}
+
+.add-box {
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-box .icon {
+    height: 78px;
+    width: 78px;
+    font-size: 40px;
+    border-radius: 50%;
+    justify-content: center;
+    border: 2px dashed pink
+}
+
+.add-box, .addbox .icon: hover {
+	transition: 0.25s;
+background-color: #8b0000;}
+
+.add-box, .addbox .icon {
+	display: flex;
+	
+}
+
+.note .details {
+    max-height: 165px;
+    overflow-y: auto; /*FFFFFFFFFFFFFFFFFFFF*/
+}
+
+.note p {
+    font-size: 22px;
+    font-weight: 500;
+	
+}
+
+.note span {
+    display: block;
+    margin-top: 5px;
+    font-size: 16px;
+	overflow-y: auto;
+	word-break: break-all;
+	text-wrap: pretty;
+}
+
+.note .bottom-content {
+    padding-top: 10px;
+    border-top: 1px solid grey;
+}
+
+.bottom-content span {
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.bottom-content .settings i {
+    cursor: pointer;
+}
+
+.settings {
+    position: relative;
+
+}
+
+.settings .menu {
+    border-radius: 4px;
+    position: absolute;
+    bottom: 0;
+    transform: scale(0);
+    transform-origin: bottom right;
+    transition: transform 0.2s ease;
+    right: -5px;
+    padding: 5px 0;
+    background-color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.settings.show .menu {
+
+    transform: scale(1);
+}
+
+.settings .menu li {
+    height: 25px;
+    cursor: pointer;
+    padding: 17px 15px;
+    border-radius: 0;
+    justify-content: flex-start;
+}
+
+.menu li:hover {
+    background: #f5f5f5;
+}
+
+.menu li i {
+    padding-right: 8px;
+}
+
+.popup-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+	display: none;
+	z-index: 9999;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.popup-box.show{
+	display: block;
+	
+}
+
+.popup-box,
+.popup-box .popup {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.popup-box.show,
+.popup-box.show .popup {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup-box .popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    max-width: 400px;
+    width: 100%;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+}
+
+.popup .content {
+    border-radius: 5px;
+	background-image: url('C:/Users/Áine/Downloads/Procrastinaut-main/Procrastinaut-main/images/Container.png') ;
+	/*background-color: #005361;*/
+	
+	overflow-y: auto;
+	overflow-x: auto;
+	text-wrap: wrap;
+	border-image: url('border.png') 30 round;
+	background-position: center;
+	box-sizing: border-box;
+	box-shadow: inset 0 0 0 10px rgba(0,0,0,0.5);
+}
+
+.popup .content header {
+    padding: 15px 55px;
+	z-index: 10000;
+	
+	background-color: #FF91A4;
+    
+}
+
+.content header i {
+    color: pink;
+    cursor: pointer;
+}
+
+.content form {
+    margin: 15px 25px 35px;
+
+}
+
+.content form :where(input, textarea) {
+    width: 100%;
+    height: 50px;
+	background: transparent;
+    padding: 0 15px;
+    border-radius: 4px;
+    border: #ccc 1px solid;
+}
+
+.content form .row {
+    margin-bottom: 20px;
+}
+
+.content form textarea {
+    height: 150px;
+    resize: none;
+}
+
+.content form button {
+    width: 100%;
+    height: 50px;
+    background-color: pink;
+    cursor: pointer;
+    color: #000000;
+    margin: 5;
+    border-radius: 4px;
+	
+}
+
+form .row label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+form textarea {
+    height: 150px;
+    resize: none;
+}
+
+.navbar{
+  background: #131313; /*navbar bgc*/
+  height:80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+
+.navbarContainer{
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 50px;
+
+}
+
+#navLogo{
+  background-color: #D8BFD8 ;
+  background: linear-gradient(135deg, #617eb8, #9b5daa);
+  /* background-image: linear-gradient(to top, #9370DB 0%, #C8A2C8 100% ); */
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem	;
+
+}
+
+
+.navbarMenu{
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+}
+
+.navbarItem{
+  height: 80px;
+  padding: 0 15px;
+  white-space: nowrap;
+}
+
+.navbarLinks{
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 0 1 rem;
+  height: 100%;
+
+
+}
+
+.navbarBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  width: 100%;
+
+}
+.button:hover{
+  background: #634a95;
+  transition: all 0.3s ease;
+
+}
+
+.navbarLinks:hover{
+  color: #9370DB;
+  transition: all 0.3 ease;
+}
