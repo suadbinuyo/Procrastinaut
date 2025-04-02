@@ -372,19 +372,19 @@ let currentBg = 'default';
 
 
 bgOptions.forEach(option => {
-  option.addEventListener('click', () => {
+  option.addEventListener('click', async() => {
     bgOptions.forEach(opt => opt.classList.remove('active'));
     option.classList.add('active');
     currentBg = option.dataset.bg;
-    updateBackground();
-    savePreferences();
+    await updateBackground();
+    await savePreferences();
   });
 });
 
 async function updateBackground() {
   const user = auth.currentUser;
   if(!user){
-	  alert("You must be logged in to change the background);
+	  alert("You must be logged in to change the background");
 	  return;
   }
   const bgVar = `--bg-image-${currentBg}`;
@@ -393,33 +393,33 @@ async function updateBackground() {
 
 // Save preferences to localStorage
 async function savePreferences() {
-  if(!user){
+  if(!user)
 	  return;
-  }
+  try{
   const bg = doc(db, "users", user.uid, "backgrounds");
-  await setDoc(bg, {background: currentBg}
-}, {merge:true});
-
+  await setDoc(bg, {background: currentBg},
+  {merge:true});
+  } catch(error){
+	  console.error("Saving: " error);
+  }
 // Load saved preferences
 async function loadPreferences() {
   const user = auth.currentUser;
   
   try{
-	  const querySnapshot = await getDocs(collection(db, "users", user.uid, "background"));
-	   if (querySnapshot.exists()) {
-      const data = querySnapshot.data();
-      currentBg = data.background || 'default';
+	  const bg =  doc(db, "users", user.uid, "background"));
+	  const querySnapshot = await getDoc(bg);
+	  
+	  if (querySnapshot.exists()) {
+      currentBg = docSnap.data().background || 'default';
 	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
       if (activeOption) {
         activeOption.classList.add('active');
       }
       updateBackground();
     }
-  }
-})
-.catch(error) => {
+} catch(error) => {
 	console.error("loading error: ", error);
-});
-
+}}
 // Initialize
 loadPreferences();
