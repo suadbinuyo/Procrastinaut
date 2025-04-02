@@ -1,4 +1,5 @@
 import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
@@ -75,7 +76,6 @@ signupForm.addEventListener("submit", (e) =>{
   // sign up the user
   
   createUserWithEmailAndPassword(auth, email, password).then(async cred =>{
-	  console.log("aaaa");
     const user = cred.user;  
   
     await setDoc(doc(db, "users", user.uid),{
@@ -111,7 +111,6 @@ signupForm.addEventListener("submit", (e) =>{
 
  // logging in
  loginForm.addEventListener("submit", (e)=>{
-	 console.log("wwwweee");
    e.preventDefault();
 
 
@@ -133,9 +132,6 @@ signupForm.addEventListener("submit", (e) =>{
  });
   
    });
-
-
-
 
 
     //storing info from todolist to database
@@ -205,6 +201,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
       li.textContent = taskTest;
 
 
+      listContainer.addEventListener("click", function(e){
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            
+        }
+       
+    }, false);
+
+
       // delete button
       let span = document.createElement("span");
       span.innerHTML = "\u00d7";
@@ -252,7 +257,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 });
 
-document.addEventListener("DOMContentLoaded"), ()=>{
+
+// saves note pad notes to db
+document.addEventListener("DOMContentLoaded", () => {
   const addBox = document.querySelector(".add-box");
   const popUpBox = document.querySelector(".popup-box");
   const closeIcon = document.querySelector("header i");
@@ -260,109 +267,222 @@ document.addEventListener("DOMContentLoaded"), ()=>{
   const titleTag = document.getElementById("noteInput");
   const descTag = document.getElementById("noteDesc");
   const popupTitle = document.querySelector("header p");
-  const addBtn = document.querySelector("button");
-
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-  let isUpdate = false;
-  let updateId = null;
-  let currentUser = null;
+  const addBtn = popUpBox.querySelector("button");
+  
+  const months = [
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+  ];
+  
+  let isUpdate = false, updateId = null, currentUser = null;
   let notes = [];
-
-
-  onAuthStateChanged(auth, (user) =>{
-    if (user){ // displays content if user is logged in
+  
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
       currentUser = user;
-      loadNotes();
-      document.querySelectorAll(".logged-in").forEach(elm => elm.style.display = "inline-block");
-      document.querySelectorAll(".logged-out").forEach(elm => elm.style.display = "none");
-    }
-    else {
+      loadNotesFromFirestore();
+      document.querySelectorAll(".logged-in").forEach(el => el.style.display = "inline-block");
+      document.querySelectorAll(".logged-out").forEach(el => el.style.display = "none");
+    } else {
       currentUser = null;
       notes = [];
       showNotes();
-      document.querySelectorAll(".logged-in").forEach(elm => elm.style.display = "none");
-      document.querySelectorAll(".logged-out").forEach(elm => elm.style.display = "inline-block");
+      document.querySelectorAll(".logged-in").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".logged-out").forEach(el => el.style.display = "inline-block");
     }
   });
-
-  addBox.addEventListener("click", () =>{
+  
+  addBox.addEventListener("click", () => {
     titleTag.focus();
     popUpBox.classList.add("show");
   });
-
-  closeIcon.addEventListenerr("click", () =>{
-    titleTag.focus();
-    popUpBox.classList.remove("show"); // disappers if user closes form
-    resetForm(); // clears form 
+  
+  closeIcon.addEventListener("click", () => {
+    popUpBox.classList.remove("show");
+    resetForm();
   });
-
-  addNoteBtn.addEventListener("click", async (e) =>{
+  
+  addNoteBtn.addEventListener("click", async (e) => {
     e.preventDefault();
-
+  
     const noteTitle = titleTag.value.trim();
     const noteDesc = descTag.value.trim();
-
+  
     if (!noteTitle && !noteDesc) return;
-
-    if (!currentUser){
-      alert("Please log in to save notes");
+  
+    if (!currentUser) {
+      alert("Please log in to save notes.");
       return;
     }
-
+  
     const noteInfo = {
-      title: titleTag,
+      title: noteTitle,
       description: noteDesc,
       date: `${months[new Date().getMonth()]} ${new Date().getDate()} ${new Date().getFullYear()}`
     };
-
-
+  
     const notesRef = collection(db, "users", currentUser.uid, "notes");
-    // adding to firestore
+  
     try {
-      if (isUpdate && updateId){
+      if (isUpdate && updateId) {
         await setDoc(doc(notesRef, updateId), noteInfo);
-      }else{;
-        await addDoc(notesRef, noteInfo)
+      } else {
+        await addDoc(notesRef, noteInfo);
       }
-
+  
       isUpdate = false;
       updateId = null;
       resetForm();
       closeIcon.click();
-      loadNotes();
-
-    }catch (err){
-      console.error("error saving note: ", err);
+      loadNotesFromFirestore();
+    } catch (err) {
+      console.error("Error saving note:", err);
     }
   });
-
-  function resetForm(){
+  
+  function resetForm() {
     titleTag.value = "";
     descTag.value = "";
     popupTitle.innerText = "Add a new note";
-    addBtn.innerText = "Add note";
+    addBtn.innerText = "Add Note";
   }
-
-  function showNotes(){
+  
+  function showNotes() {
     const notesContainer = document.querySelector(".wrapper");
     if (!notesContainer) return;
-
-
-    // clear existing notes except add box
+  
+    // Clear existing notes except the add-box
     const existingNotes = notesContainer.querySelectorAll(".note");
     existingNotes.forEach(note => note.remove());
-
-    // sort notes by newest first
-    const sortedNotes = [...notes].sort((a, b) =>{
+  
+    // Sort notes by creation date (newest first)
+    const sortedNotes = [...notes].sort((a, b) => {
       const aTime = a.createdAt?.seconds || 0;
       const bTime = b.createdAt?.seconds || 0;
       return bTime - aTime;
-
     });
+  
+    // Add notes to DOM
+    sortedNotes.forEach(note => {
+      const noteElement = document.createElement("li");
+      noteElement.className = "note";
+      noteElement.dataset.id = note.id;
     
+      noteElement.innerHTML = `
+        <div class="details">
+          <p>${note.title || 'Untitled Note'}</p>
+          <span>${note.description || 'No description'}</span>
+        </div>
+        <div class="bottom-content">
+          <span>${note.date || formatFirestoreDate(note.createdAt)}</span>
+          <div class="action-buttons">
+            <!-- Buttons will be added here programmatically -->
+          </div>
+        </div>
+      `;
+  
+      // Create action buttons container
+      const actionButtons = noteElement.querySelector(".action-buttons");
+      
+      // Add edit button (✎)
+      const editSpan = document.createElement("span");
+      editSpan.innerHTML = "✎";
+      editSpan.className = "edit-note";
+      actionButtons.appendChild(editSpan);
+  
+      // Add delete button (×)
+      const deleteSpan = document.createElement("span");
+      deleteSpan.innerHTML = "×";
+      deleteSpan.className = "delete-note";
+      actionButtons.appendChild(deleteSpan);
+  
+      // Add event listeners
+      editSpan.addEventListener("click", (e) => {
+        e.stopPropagation();
+        startEditNote(note.id);
+      });
+  
+      deleteSpan.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        try {
+          if (!currentUser) {
+            alert("Please log in to delete notes.");
+            return;
+          }
+          
+          const confirmDelete = confirm("Are you sure you want to delete this note?");
+          if (!confirmDelete) return;
+  
+          await deleteDoc(doc(db, "users", currentUser.uid, "notes", note.id));
+          console.log("Note deleted successfully");
+          await loadNotesFromFirestore();
+        } catch (error) {
+          console.error("Error deleting note:", error);
+          alert("Failed to delete note. Please try again.");
+        }
+      });
+  
+      // Existing menu event listeners
+      const editBtn = noteElement.querySelector(".edit-btn");
+      const deleteBtn = noteElement.querySelector(".delete-btn");
+      const menuIcon = noteElement.querySelector(".menu-icon");
+      
+      if (editBtn) editBtn.addEventListener("click", () => startEditNote(note.id));
+      if (deleteBtn) deleteBtn.addEventListener("click", () => deleteNote(note.id));
+      if (menuIcon) menuIcon.addEventListener("click", showMenu);
+      
+      notesContainer.insertBefore(noteElement, addBox.nextSibling);
+    });
+  
   }
-}
+  async function loadNotesFromFirestore() {
+    if (!currentUser) return;
+  
+    const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "notes"));
+    notes = [];
+    querySnapshot.forEach(docSnap => {
+      notes.push({ ...docSnap.data(), id: docSnap.id });
+    });
+    showNotes();
+  }
+  
+  
+  
+  window.updateNote = function (noteId, title, desc) {
+    isUpdate = true;
+    updateId = noteId;
+    addBox.click();
+    titleTag.value = title;
+    descTag.value = desc;
+    popupTitle.innerText = "Update your note";
+    addBtn.innerText = "Update Note";
+  };
+  function startEditNote(noteId) {
+    const noteToEdit = notes.find(note => note.id === noteId);
+    if (!noteToEdit) return;
+  
+    isUpdate = true;
+    updateId = noteId;
+    if (titleTag) titleTag.value = noteToEdit.title || '';
+    if (descTag) descTag.value = noteToEdit.description || '';
+    if (popupTitle) popupTitle.textContent = "Update your note";
+    if (addNoteBtn) addNoteBtn.textContent = "Update Note";
+    popUpBox?.classList.add("show");
+    titleTag?.focus();
+  }
+  window.showMenu = function (elem) {
+    const menu = elem.nextElementSibling;
+    menu.classList.toggle("show");
+    document.addEventListener("click", function onClickOutside(e) {
+      if (!menu.contains(e.target) && e.target !== elem) {
+        menu.classList.remove("show");
+        document.removeEventListener("click", onClickOutside);
+      }
+    });
+  };
+  
+ 
+});
 
 //settings script
 
@@ -376,7 +496,6 @@ bgOptions.forEach(option => {
   option.addEventListener('click', async() => {
     bgOptions.forEach(opt => opt.classList.remove('active'));
     option.classList.add('active');
-	console.log("2");
     currentBg = option.dataset.bg;
     await updateBackground();
     await savePreferences();
@@ -384,10 +503,10 @@ bgOptions.forEach(option => {
 });
 
 async function updateBackground() {
-  console.log("3");
+  console.log("2");
   const user = auth.currentUser;
   if(!user){
-	  console.log("3.5");
+	  console.log("3");
 	  alert("You must be logged in to change the background");
 	  return;
   }
@@ -398,28 +517,29 @@ async function updateBackground() {
 
 // Save preferences to localStorage
 async function savePreferences() {
-	console.log("5");
+console.log("5");
   if(!user)
-	  console.log("5");
+	  console.log("5.5");
 	  return;
-  try{
   console.log("6");
+  try{
   const bg = doc(db, "users", user.uid, "backgrounds");
   await setDoc(bg, {background: currentBg},
-  console.log("7");
+  conosole.log("7");
   {merge:true});
   console.log("8");
   } catch(error){
-	  console.error("Saving: " error);
+	  console.error("Saving: ", error);
   }
+
+}
 // Load saved preferences
 async function loadPreferences() {
 	console.log("9");
   const user = auth.currentUser;
-  console.log(user);
-  try{
-	  
-	  const bg =  doc(db, "users", user.uid, "background"));
+  
+
+	  const bg =  doc(db, "users", user.uid, "background");
 	  const querySnapshot = await getDoc(bg);
 	  console.log("10");
 	  if (querySnapshot.exists()) {
@@ -430,12 +550,11 @@ async function loadPreferences() {
 		  console.log("12");
         activeOption.classList.add('active');
       }
-	  console.log("13");
       updateBackground();
+	  console.log("13");
     }
-} catch(error) => {
-	console.error("loading error: ", error);
-}}
+  
+
+}
 // Initialize
-console.log("14");
 loadPreferences();
