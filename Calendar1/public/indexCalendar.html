@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel= "stylesheet" href="src/assets/main.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body  style="background-color: rgb(223, 134, 223);">
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <h1 style="color:#1F51FF;" outline-color: black;>Welcome to the calendar!</h1>
+    <button style="color:#1F51FF" onclick="window.location.href = 'http://localhost:8080/'">calendar</button>
+    <br>
+    <nav class="navbar">
+      <div class="navbarContainer">
+        <a href="#" id="navLogo">PROCRASTINAUT</a>
+        <div class="navbarToggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbarMenu">
+          <li class="navbarItem">
+            <a href="./index.html" class="navbarLinks">Home</a>
+          </li>
+    
+          <li class="navbarItem">
+            <a href="./todolist.html" class="navbarLinks">To Do List</a>
+          </li>
+    
+          <li class="navbarItem">
+            <a href="./Calendar1/public/indexCalendar.html" class="navbarLinks">Calendar</a>
+          </li>
+    
+          <li class="navbarItem">
+            <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
+          </li>
+          
+          <li class="navbarItem">
+            <a href="./notePad.html" class="navbarLinks">Note Pad</a>
+          </li>
+    
+          <li class="navbarItem">
+            <a href="./about.html" class="navbarLinks">About Us</a>
+          </li>
+    
+          <li class="navbarBtn logged-out">
+            <a href="#" class="button open-modal" data-modal="signup" id="signup-btn">Sign up</a>
+          </li>
+    
+          <li class="navbarBtn logged-out">
+            <a href="#" class="button open-modal" data-modal="login" id="login-btn">Login</a>
+          </li>
+    
+          <li class="navbarBtn logged-in">
+            <a href="#" class="button logout-button" id="logout">Logout</a>
+          </li>
+    
+        </ul>
+      </div>
+    </nav>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

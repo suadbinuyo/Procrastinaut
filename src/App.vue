@@ -4,6 +4,7 @@
 </script>
 
 <template>
+  <div>
   <header>
 
     
@@ -12,6 +13,7 @@
   <main>
     <TheWelcome />
   </main>
+  </div>
 </template>
 
 <style scoped>

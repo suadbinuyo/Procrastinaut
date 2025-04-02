@@ -1,0 +1,8 @@
+
+  body {
+    background: url('@/assets/circuit_background.jpg') no-repeat center center;
+    background-size: cover;
+    margin: 0;
+    height: 100vh; /* Ensure the body fills the entire viewport */
+  }
+  
