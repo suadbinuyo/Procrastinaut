@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel= "stylesheet" href="src/assets/toDoList.css">
+        <link rel= "stylesheet" href="toDoList.css">
 
         <html lang="">
           <head>
@@ -12,14 +12,61 @@
           </head>   
           
         <body>
+		    <nav class="navbar">
+      <div class="navbarContainer">
+        <a href="/" id="navLogo">PROCRASTINAUT</a>
+        <div class="navbarToggle" id="mobile-menu">
+          <span class="bar"></span> <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="navbarMenu">
+          <li class="navbarItem">
+            <a href="./index.html" class="navbarLinks">Home</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./todolist.html" class="navbarLinks">To Do List</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./calendar.html" class="navbarLinks">Calendar</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
+          </li>
+          
+          <li class="navbarItem">
+            <a href="./notePad.html" class="navbarLinks">Note Pad</a>
+          </li>
+
+          <li class="navbarItem">
+            <a href="./about.html" class="navbarLinks">About Us</a>
+          </li>
+
+          <li class="navbarBtn">
+            <a href="/" class="button">Sign Up</a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
            <div class="toDoListContainer">
                 <div class="toDoList">
                     <h2>To Do List <img src="images/icon.png"></h2>
                     <div class="toDoListRow">
                         <input type ="text" id="taskInput" placeholder="Enter a task">
+						
+						<br><button onclick = "addDifficulty(1)" class= "difficultyButton"> Easy</button>
+                        <br><button onclick = "addDifficulty(2)" class = "difficultyButton">Medium</button>
+                        <br><button onclick = "addDifficulty(3)" class = "difficultyButton">Hard</button>
+					   
+					<div>
                         <button onclick="addTask()" class="toDoListBtn">Add</button>
-
-                    </div>
+					</div>
+					</div>
+					
                     <ul id="tasksContainer">
                         <!-- <li class="checked">Task 1</li>
                         <li>Task 2</li>
@@ -34,7 +81,7 @@
 const listContainer = document.getElementById("tasksContainer");
 
 function addTask(){
-    if(input.value ===''){
+    if(input.value ===''){ //if nothing is inputted alert pops up
         alert("Please add a task !");
     }
     else{
@@ -44,12 +91,15 @@ function addTask(){
         let span = document.createElement("span");
         span.innerHTML = "\u00d7";
         li.appendChild(span);
+		
     }
 
     input.value= "";
     saveData();
     
 }
+
+
 
 listContainer.addEventListener("click", function(e){
     if(e.target.tagName === "LI"){
