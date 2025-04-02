@@ -1,136 +1,519 @@
 @font-face {
-  font-family: 'mokoto'; 
-  src: url('Mokoto-Regular.ttf');
-  } 
+		font-family: 'mokoto'; 
+		src: url('Mokoto-Regular.ttf');
+		} 
 
+:root {
+
+  --bg-image-default: url('images/Background.png');
+  --bg-image-spaceMountain: url('images/spaceMountain.jpg');
+  --bg-image-spaceship: url('images/spaceship.jpg');
+
+  
+  /* Current background */
+  --bg-image: var(--bg-image-default);
+}
 
 
 *{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'mokoto', sans-serif;
-  
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'mokoto', sans-serif;
+    
+  }
+  body {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  color: white;
+  transition: background-image 0.3s ease;
 }
 
 .toDoListContainer{
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #153677, #4e085f);
-  background-image: url('images/Background.png');
-  padding: 10px;
-
-}
-
-.toDoList{
-  width: 100%;
-  max-width: 540px;
-  background-color: #fff;
-  margin: 100px auto 20px;
-  padding: 40px 30px 70px;
-  border-radius: 10px;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #153677, #4e085f);
+    background-image: var(--bg-image);
+    padding: 10px;
   
-}
+  }
+  
+  .toDoList{
+    width: 100%;
+    max-width: 540px;
+    background-color: #fff;
+    margin: 100px auto 20px;
+    padding: 40px 30px 70px;
+    border-radius: 10px;
+    
+  }
+  
+  .toDoList h2{
+    color: #002765;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  
+  }
+  
+  .toDoList h2 img{
+    width: 30px ;
+    margin-left: 10px;
+  }
+  
+  .toDoListRow{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #edeef0;
+    border-radius: 30px;
+    padding-left: 20px;
+    margin-bottom: 25px;
+  }
+  
+  input{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px;
+    font-weight: 14px;
+    
+  }
+  
+  .toDoListBtn{
+    border: none;
+    outline: none;
+    padding: 16px 50px;
+    background: #4e085f;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;
+  }
+  
+  
+  .difficultyButton{
+	  background-color: #00838F;
+	  padding: 8px 15px;
+	  font-size: 10px;
+	  cursor: pointer;
+	  border-radius:20px;
+  }
+  
+  ul li{
+    list-style: none;
+    font-size: 17.5px;
+    padding: 12px 8px 12px 50px;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+  
+  }
+  
+   .toDoListContainer ul li::before{
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+	background-image:  url('images/unchecked.png');
+    background-size: cover;
+    background-position: center;
+    top: 12px;
+    left: 8px;
+  }
 
-.toDoList h2{
-  color: #002765;
+  .toDoListContainer ul li.checked{
+    color: #555; 
+    text-decoration: line-through;
+  }
+
+  .toDoListContainer ul li.checked::before{
+    background-image: url('images/checked.png');
+  }
+   
+
+  ul li span{
+    position: absolute;
+    right: 0;
+    top: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    color: #555;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+  }
+
+  ul li span:hover{
+    background: #edeef0;
+  }
+.navbar{
+  background: #131313; /*navbar bgc*/
+  height:80px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
-.toDoList h2 img{
-  width: 30px ;
-  margin-left: 10px;
-}
 
-.toDoListRow{
+.navbarContainer{
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #edeef0;
-  border-radius: 30px;
-  padding-left: 20px;
-  margin-bottom: 25px;
+  height: 80px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 50px;
+
 }
 
-input{
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 10px;
-  font-weight: 14px;
-  
-}
-
-.toDoListBtn{
-  border: none;
-  outline: none;
-  padding: 16px 50px;
-  background: #4e085f;
-  color: #fff;
-  font-size: 16px;
+#navLogo{
+  background-color: #D8BFD8 ;
+  background: linear-gradient(135deg, #617eb8, #9b5daa);
+  /* background-image: linear-gradient(to top, #9370DB 0%, #C8A2C8 100% ); */
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  border-radius: 40px;
+  text-decoration: none;
+  font-size: 2rem	;
+
 }
 
 
-.difficultyButton{
-  background-color: #00838F;
-  padding: 8px 15px;
-  font-size: 10px;
-  cursor: pointer;
-  border-radius:20px;
-}
-
-ul li{
+.navbarMenu{
+  display: flex;
+  align-items: center;
   list-style: none;
-  font-size: 17.5px;
-  padding: 12px 8px 12px 50px;
-  user-select: none;
+  text-align: center;
+}
+
+.navbarItem{
+  height: 80px;
+  padding: 0 15px;
+  white-space: nowrap;
+}
+
+.navbarLinks{
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 0 1 rem;
+  height: 100%;
+
+
+}
+
+.navbarBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  width: 100%;
+
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 20px;
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background: #9370DB;
+  color: #fff;
+
+}
+
+.button:hover{
+  background: #634a95;
+  transition: all 0.3s ease;
+
+}
+
+.navbarLinks:hover{
+  color: #9370DB;
+  transition: all 0.3 ease;
+}
+
+@media screen and (max-width: 960px){
+  .navbarContainer{
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    z-index: 1;
+    width: 100%;
+    max-width: 1300px;
+    padding: 0;
+  }
+
+  .navbarMenu{
+    display: grid;
+    grid-template-columns: auto;
+    margin: 0;
+    width: 100%;
+    position: absolute;
+    top: -1000px;
+    opacity: 0; 
+    transition: all 0.5s ease;
+    height: 50vh;
+    z-index: -1;
+    background: #131313;
+  }
+
+  .navbarMenu.active{
+    background: #131313;
+    top: 100%;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 99;
+    height: 50vh;
+    font-size: 1.6rem;
+
+  }
+
+  #navbarLogo{
+    padding-left: 25px;
+  }
+  
+
+  .navbarToggle .bar{
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease-in-out;
+    background: #fff;
+  }
+
+  .navbarItem{
+    width: 100%;
+    background: #131313; /* added */
+
+  }
+
+  .navbarLinks{
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
+
+  #mobile-menu{
+    position: absolute;
+    top: 20%;
+    right: 5%;
+    transform: translate(5%, 20%);
+  }
+
+  .navbarBtn{
+    padding-bottom: 2rem;
+    background: #131313; /* added */
+
+  }
+
+  .button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80px;
+    margin: 0;
+  }
+
+  .navbarToggle .bar{
+    display: block;
+    cursor: pointer;
+  }
+
+  #mobile-menu.is-active .bar:nth-child(2){
+    opacity: 0;
+  }
+
+  #mobile-menu.is-active .bar:nth-child(1){
+   transform: translateY(8px) rotate(45deg);
+  }
+
+  #mobile-menu.is-active .bar:nth-child(3){
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+
+.main{
+   /* background: linear-gradient(135deg, #153677, #4e085f);  */
+  background-image: url('images/Background.png');
+  background-size: cover;
+
+}
+
+.bg_img{
+  background-size: cover;
+  align-items: center;
+  z-index: 1;
+
+}
+
+.mainContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-self: center;
+  margin: 0 auto;
+  height: 90vh;
+  background: color #141414;
+  z-index: 1;
+  width: 	100%;
+  max-width: 1300px;
+  padding: 0 50px;
+
+}
+
+.mainContent h1{
+  font-size: 4rem;
+  /* background-color: #9370DB; */
+  background-image: linear-gradient(to top, #b721ff 0%, #52c2db 100% );
+  /* background-color: #fff; */
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+ 
+}
+
+.mainContent p{
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff
+}
+
+.mainBtn{
+  font-size: 1rem;
+  background-image: linear-gradient(to top, #9370DB 0%, #b721ff 100%);
+  padding: 12px 32px;
+  border: none;
+  border-radius:4px ;
+  color: #fff;
+  margin-top: 2rem;
   cursor: pointer;
   position: relative;
+  transition: all 0.35s;
+  outline: none;
 
 }
 
- .toDoListContainer ul li::before{
-  content: '';
+.mainBtn a{
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  text-decoration: none;
+}
+
+.mainBtn:after{
   position: absolute;
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-background-image:  url('images/unchecked.png');
-  background-size: cover;
-  background-position: center;
-  top: 12px;
-  left: 8px;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #5d7a80;
+  transition: all 0.35s; 
+  border-radius: 4px;
 }
 
-.toDoListContainer ul li.checked{
-  color: #555; 
-  text-decoration: line-through;
+.mainBtn:hover{
+  color: #fff;
 }
 
-.toDoListContainer ul li.checked::before{
-  background-image: url('images/checked.png');
+.mainBtn:hover::after{
+  width: 100%;
 }
- 
 
-ul li span{
+.mainImgContainer{
   position: absolute;
   right: 0;
-  top: 5px;
-  width: 40px;
-  height: 40px;
-  font-size: 22px;
-  color: #555;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 50%;
+  top: 20px;
+
+
 }
 
-ul li span:hover{
-  background: #edeef0;
+
+.mainImg{
+  height: 80%;
+  width: auto;
+  transform: rotate(-17deg);
+}
+
+
+/*mobile responsive*/
+
+@media screen and (max-width: 768px){
+  .mainContainer{
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-self: center;
+    width: 100%;
+    margin: 0 auto;
+    height: 90vh;
+  }
+
+  .mainContent{
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .mainContent h1{
+    font-size: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  .mainContent h2{
+    font-size: 3rem;
+  }
+
+  .mainContent p{
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px){
+  .mainContent h1{
+    font-size: 2rem;
+    margin-top: 3rem;
+  }
+
+  .mainContent h2{
+    font-size: 3rem;
+  }
+
+  .mainContent p{
+    margin-top: 2rem;
+    font-size: 1.5rem;
+}
+  .mainBtn{
+    padding: 12px 36px;
+    margin: 2.5rem 0;
+  }
 }

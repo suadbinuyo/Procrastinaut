@@ -1,13 +1,30 @@
+/* @import './base.css'; */
 
+@font-face {
+		font-family: 'mokoto'; 
+		src: url('Mokoto-Regular.ttf');
+		} 
 
 
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Kumbh Sans', sans-serif; 
+  font-family: 'mokoto', sans-serif; 
  
 }
+
+:root {
+
+  --bg-image-default: url('images/Background.png');
+  --bg-image-spaceMountain: url('images/spaceMountain.jpg');
+  --bg-image-spaceship: url('images/spaceship.jpg');
+
+  
+  /* Current background */
+  --bg-image: var(--bg-image-default);
+}
+
 
 .navbar{
   background: #131313; /*navbar bgc*/
@@ -225,8 +242,8 @@
 
 
 .main{
-  /* background: linear-gradient(135deg, #153677, #4e085f);  */
-  background-image: url('images/Background.png');
+  background: linear-gradient(135deg, #153677, #4e085f); 
+  background-image: var(--bg-image); 
   background-size: cover;
 
 }
@@ -334,12 +351,6 @@
 /*mobile responsive*/
 
 @media screen and (max-width: 768px){
-
-  #navLogo {
-    font-size: 1.8rem;
-    margin-left: -50px;
-    padding-right: 30px;
-  }
   .mainContainer{
     display: grid;
     grid-template-columns: auto;
@@ -349,9 +360,6 @@
     margin: 0 auto;
     height: 90vh;
   }
-
-  
-
 
   .mainContent{
     text-align: center;
@@ -503,7 +511,3 @@
 #logout{
   display: none;
 }
-
-
-
-
