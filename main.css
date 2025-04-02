@@ -1,11 +1,14 @@
-
+@font-face {
+  font-family: 'mokoto'; 
+  src: url('Mokoto-Regular.ttf');
+} 
 
 
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Kumbh Sans', sans-serif; 
+  /* font-family: 'Kumbh Sans', sans-serif;  */
  
 }
 
@@ -38,24 +41,7 @@
 }
 
 
-#navLogo{
-  background-color: #D8BFD8 ;
-  background: linear-gradient(135deg, #617eb8, #9b5daa);
-  /* background-image: linear-gradient(to top, #9370DB 0%, #C8A2C8 100% ); */
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 2rem	;
-  margin-left: -100px;
-  padding-right: 50px;
 
-}
 
 
 .navbarMenu{
@@ -331,16 +317,42 @@
 }
 
 
-/*mobile responsive*/
 
-@media screen and (max-width: 768px){
 
+#navLogo {
+  background: linear-gradient(135deg, #617eb8, #9b5daa);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  
+  /* responsive sizing */
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  margin-left: 0; 
+  padding-right: 2rem;
+ transition: all 0.3s ease;  /* smooth resizing */
+}
+
+/*  smaller devices */
+@media screen and (max-width: 1024px) {
   #navLogo {
-    font-size: 1.8rem;
-    margin-left: -50px;
-    padding-right: 30px;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    padding-right: 1.5rem;
   }
-  .mainContainer{
+}
+
+@media screen and (max-width: 768px) {
+  #navLogo {
+    font-size: clamp(1rem, 4.5vw, 1.6rem);
+    padding-right: 1rem;
+    margin-left: 0; 
+  }
+  
+  .mainContainer {
     display: grid;
     grid-template-columns: auto;
     align-items: center;
@@ -350,44 +362,47 @@
     height: 90vh;
   }
 
-  
-
-
-  .mainContent{
+  .mainContent {
     text-align: center;
     margin-bottom: 4rem;
   }
 
-  .mainContent h1{
+  .mainContent h1 {
     font-size: 2.5rem;
     margin-top: 2rem;
   }
 
-  .mainContent h2{
+  .mainContent h2 {
     font-size: 3rem;
   }
 
-  .mainContent p{
+  .mainContent p {
     margin-top: 1rem;
     font-size: 1.5rem;
   }
 }
 
-@media screen and (max-width: 480px){
-  .mainContent h1{
+@media screen and (max-width: 480px) {
+  #navLogo {
+    font-size: clamp(0.9rem, 5vw, 1.4rem);
+    padding-right: 0.5rem;
+  }
+
+  .mainContent h1 {
     font-size: 2rem;
     margin-top: 3rem;
   }
 
-  .mainContent h2{
-    font-size: 3rem;
+  .mainContent h2 {
+    font-size: 2.5rem;
   }
 
-  .mainContent p{
+  .mainContent p {
     margin-top: 2rem;
-    font-size: 1.5rem;
-}
-  .mainBtn{
+    font-size: 1.2rem;
+  }
+  
+  .mainBtn {
     padding: 12px 36px;
     margin: 2.5rem 0;
   }

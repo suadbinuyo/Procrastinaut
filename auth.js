@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       li.textContent = taskTest;
 
 
+      // tasks that have been completed 
       listContainer.addEventListener("click", function(e){
         if(e.target.tagName === "LI"){
             e.target.classList.toggle("checked");
@@ -490,8 +491,22 @@ document.addEventListener("DOMContentLoaded", () => {
 const bgOptions = document.querySelectorAll('.bg-option');
 let currentBg = 'default';
 
+auth.onAuthStateChanged(async (user) => {
+  console.log("Auth state changed, user:", user);
+  if (user) {
+    console.log("9 - User is logged in");
+    await loadPreferences();
+  } else {
+    console.log("No user logged in");
+    // Set default background if no user
+    currentBg = 'default';
+    updateBackground();
+  }
+});
+
 
 bgOptions.forEach(option => {
+	console.log("1");
   option.addEventListener('click', async() => {
     bgOptions.forEach(opt => opt.classList.remove('active'));
     option.classList.add('active');
@@ -502,46 +517,69 @@ bgOptions.forEach(option => {
 });
 
 async function updateBackground() {
+  console.log("2");
   const user = auth.currentUser;
   if(!user){
+	  console.log("3");
 	  alert("You must be logged in to change the background");
 	  return;
   }
+  console.log("4");
   const bgVar = `--bg-image-${currentBg}`;
   document.documentElement.style.setProperty('--bg-image', `var(${bgVar})`);
 }
 
 // Save preferences to localStorage
 async function savePreferences() {
-  if(!user)
-	  return;
+  const user = auth.currentUser;
+console.log("5");
+  if(!user){
+	  console.log("5.5");
+	  return;}
+    console.log("user state", user);
+  
+  console.log("6");
   try{
-  const bg = doc(db, "users", user.uid, "backgrounds");
+  const bg = doc(db, "users", user.uid, "settings", "backgrounds");
   await setDoc(bg, {background: currentBg},
+  
   {merge:true});
+  console.log("8");
   } catch(error){
 	  console.error("Saving: ", error);
   }
 
 }
+
 // Load saved preferences
 async function loadPreferences() {
+	console.log("9");
   const user = auth.currentUser;
+
+  if (!user){
+    console.log("9.5");
+  }
   
 
-	  const bg =  doc(db, "users", user.uid, "background");
+	  const bg =  doc(db, "users", user.uid, "settings","background");
+    console.log("9.75")
 	  const querySnapshot = await getDoc(bg);
-	  
+	  console.log("10");
 	  if (querySnapshot.exists()) {
       currentBg = docSnap.data().background || 'default';
+	  console.log("11");
 	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
       if (activeOption) {
+		  console.log("12");
         activeOption.classList.add('active');
       }
       updateBackground();
+	  console.log("13");
     }
   
 
 }
+
+console.log("14")
 // Initialize
-loadPreferences();
+//loadPreferences();
