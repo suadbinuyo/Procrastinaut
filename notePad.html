@@ -1,14 +1,67 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InstaNote</title>
-    <link rel="stylesheet" href="src/assets/notePad.css">
+    <title>Note Pad</title>
+    <link rel="stylesheet" href="notePad.css">
+    <link rel="stylesheet" href="main.css">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release-pro/v4.0.0/css/line.css">
 </head>
 <body>
+  <nav class="navbar">
+    <div class="navbarContainer">
+      <a href="#" id="navLogo">PROCRASTINAUT</a>
+      <div class="navbarToggle" id="mobile-menu">
+        <span class="bar"></span> <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <ul class="navbarMenu">
+        <li class="navbarItem">
+          <a href="./index.html" class="navbarLinks">Home</a>
+        </li>
+
+        <li class="navbarItem">
+          <a href="./todolist.html" class="navbarLinks">To Do List</a>
+        </li>
+
+        <li class="navbarItem">
+          <a href="./calendar.html" class="navbarLinks">Calendar</a>
+        </li>
+
+        <li class="navbarItem">
+          <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
+        </li>
+        
+        <li class="navbarItem">
+          <a href="./notePad.html" class="navbarLinks">Note Pad</a>
+        </li>
+
+        <li class="navbarItem">
+          <a href="./about.html" class="navbarLinks">About Us</a>
+        </li>
+
+        <li class="navbarItem">
+          <a href="./settings.html" class="navbarLinks">Settings</a>
+        </li>
+<!-- 
+        <li class="navbarBtn logged-out">
+          <a href="#" class="button open-modal" data-modal="signup" id="signup-btn">Sign up</a>
+        </li> -->
+
+        <li class="navbarBtn logged-out">
+          <a href="#" class="button open-modal" data-modal="login" id="login-btn">Login</a>
+        </li>
+
+        <li class="navbarBtn logged-in">
+          <a href="#" class="button logout-button" id="logout">Logout</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
 
     <div class="popup-box">
         <div class="popup show">
@@ -17,14 +70,14 @@
                     <p>Add a new note</p>
                     <i class="uil uil-times"></i>
                 </header>
-                <form action="#">
+                <form id="notes-form" action="#">
                     <div class="row tile">
                         <label>Title</label>
-                        <input type="text" id="input">
+                        <input type="text" id="noteInput">
                     </div>
                     <div class="row description">
                         <label for="">Description</label>
-                       <textarea name="" id=""></textarea>
+                       <textarea name="" id="noteDesc"></textarea>
                     </div>
                     <button class="add-note">Add Note</button>
                 </form>
@@ -37,16 +90,17 @@
     <p>Add new note</p>
    </li>
 
-   <li class="note">
+   <!-- <li class="note">
     <div class="details">
         <p>Title</p>
-        <span>Add note</span>
+        <span>Add note</span> -->
     </div>
 
 
 </div>
-<script src="notePad.js">
-	
-	</script>
+<!-- <script src="notePad.js"></script> -->
+<script type="module" src="auth.js"></script>
+
+
 </body>
 </html>

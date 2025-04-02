@@ -1,5 +1,19 @@
- // Import the functions you need from the SDKs you need
+import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+
+import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
  
+
+ const firebaseConfig = {
+  apiKey: "AIzaSyBdDUUJKgBgSyV6bL9Qrw93BWzjEODZjtI",
+  authDomain: "first-project-dc60b.firebaseapp.com",
+  projectId: "first-project-dc60b",
+  storageBucket: "first-project-dc60b.firebasestorage.app",
+  messagingSenderId: "692391873078",
+  appId: "1:692391873078:web:12ec161a69cbee938a2697",
+  measurementId: "G-8WM43P61Z6"
+};
  
  // Initialize Firebase
  const app = initializeApp(firebaseConfig);
@@ -8,11 +22,17 @@
  const auth = getAuth(app);
  const db = getFirestore(app);
 
- 
+ // initialising app stuff
 
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
  onAuthStateChanged(auth, (user) =>{
-  const logoutButton = document.getElementById("logout");
+  const logoutButton = document.querySelector(".logout-button");
   const loginButton = document.getElementById("login-btn");
   const signup = document.getElementById("signup-btn");
 
@@ -23,17 +43,20 @@
     logoutButton.style.display = "block";
     loginButton.style.display ="none";
     signup.style.display = "none";
+    
   }
   else{
     console.log("user logged out");
      logoutButton.style.display = "none";
      loginButton.style.display ="block";
      signup.style.display = "block";
+     
   }
-
+ 
 
  });
-
+  
+  
    document.addEventListener("DOMContentLoaded", () =>{
 
     const signupForm = document.querySelector('#signup-form');
@@ -111,10 +134,7 @@ signupForm.addEventListener("submit", (e) =>{
    });
 
 
-
-
-
-//    //storing info from todolist to database
+    //storing info from todolist to database
 
 document.addEventListener("DOMContentLoaded", ()=>{
     const taskInput = document.getElementById("taskInput");
@@ -181,6 +201,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
       li.textContent = taskTest;
 
 
+      listContainer.addEventListener("click", function(e){
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            
+        }
+       
+    }, false);
+
+
       // delete button
       let span = document.createElement("span");
       span.innerHTML = "\u00d7";
@@ -227,3 +256,292 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 });
+
+
+// saves note pad notes to db
+document.addEventListener("DOMContentLoaded", () => {
+  const addBox = document.querySelector(".add-box");
+  const popUpBox = document.querySelector(".popup-box");
+  const closeIcon = document.querySelector("header i");
+  const addNoteBtn = document.querySelector(".add-note");
+  const titleTag = document.getElementById("noteInput");
+  const descTag = document.getElementById("noteDesc");
+  const popupTitle = document.querySelector("header p");
+  const addBtn = popUpBox.querySelector("button");
+  
+  const months = [
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+  ];
+  
+  let isUpdate = false, updateId = null, currentUser = null;
+  let notes = [];
+  
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      loadNotesFromFirestore();
+      document.querySelectorAll(".logged-in").forEach(el => el.style.display = "inline-block");
+      document.querySelectorAll(".logged-out").forEach(el => el.style.display = "none");
+    } else {
+      currentUser = null;
+      notes = [];
+      showNotes();
+      document.querySelectorAll(".logged-in").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".logged-out").forEach(el => el.style.display = "inline-block");
+    }
+  });
+  
+  addBox.addEventListener("click", () => {
+    titleTag.focus();
+    popUpBox.classList.add("show");
+  });
+  
+  closeIcon.addEventListener("click", () => {
+    popUpBox.classList.remove("show");
+    resetForm();
+  });
+  
+  addNoteBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+  
+    const noteTitle = titleTag.value.trim();
+    const noteDesc = descTag.value.trim();
+  
+    if (!noteTitle && !noteDesc) return;
+  
+    if (!currentUser) {
+      alert("Please log in to save notes.");
+      return;
+    }
+  
+    const noteInfo = {
+      title: noteTitle,
+      description: noteDesc,
+      date: `${months[new Date().getMonth()]} ${new Date().getDate()} ${new Date().getFullYear()}`
+    };
+  
+    const notesRef = collection(db, "users", currentUser.uid, "notes");
+  
+    try {
+      if (isUpdate && updateId) {
+        await setDoc(doc(notesRef, updateId), noteInfo);
+      } else {
+        await addDoc(notesRef, noteInfo);
+      }
+  
+      isUpdate = false;
+      updateId = null;
+      resetForm();
+      closeIcon.click();
+      loadNotesFromFirestore();
+    } catch (err) {
+      console.error("Error saving note:", err);
+    }
+  });
+  
+  function resetForm() {
+    titleTag.value = "";
+    descTag.value = "";
+    popupTitle.innerText = "Add a new note";
+    addBtn.innerText = "Add Note";
+  }
+  
+  function showNotes() {
+    const notesContainer = document.querySelector(".wrapper");
+    if (!notesContainer) return;
+  
+    // Clear existing notes except the add-box
+    const existingNotes = notesContainer.querySelectorAll(".note");
+    existingNotes.forEach(note => note.remove());
+  
+    // Sort notes by creation date (newest first)
+    const sortedNotes = [...notes].sort((a, b) => {
+      const aTime = a.createdAt?.seconds || 0;
+      const bTime = b.createdAt?.seconds || 0;
+      return bTime - aTime;
+    });
+  
+    // Add notes to DOM
+    sortedNotes.forEach(note => {
+      const noteElement = document.createElement("li");
+      noteElement.className = "note";
+      noteElement.dataset.id = note.id;
+    
+      noteElement.innerHTML = `
+        <div class="details">
+          <p>${note.title || 'Untitled Note'}</p>
+          <span>${note.description || 'No description'}</span>
+        </div>
+        <div class="bottom-content">
+          <span>${note.date || formatFirestoreDate(note.createdAt)}</span>
+          <div class="action-buttons">
+            <!-- Buttons will be added here programmatically -->
+          </div>
+        </div>
+      `;
+  
+      // Create action buttons container
+      const actionButtons = noteElement.querySelector(".action-buttons");
+      
+      // Add edit button (✎)
+      const editSpan = document.createElement("span");
+      editSpan.innerHTML = "✎";
+      editSpan.className = "edit-note";
+      actionButtons.appendChild(editSpan);
+  
+      // Add delete button (×)
+      const deleteSpan = document.createElement("span");
+      deleteSpan.innerHTML = "×";
+      deleteSpan.className = "delete-note";
+      actionButtons.appendChild(deleteSpan);
+  
+      // Add event listeners
+      editSpan.addEventListener("click", (e) => {
+        e.stopPropagation();
+        startEditNote(note.id);
+      });
+  
+      deleteSpan.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        try {
+          if (!currentUser) {
+            alert("Please log in to delete notes.");
+            return;
+          }
+          
+          const confirmDelete = confirm("Are you sure you want to delete this note?");
+          if (!confirmDelete) return;
+  
+          await deleteDoc(doc(db, "users", currentUser.uid, "notes", note.id));
+          console.log("Note deleted successfully");
+          await loadNotesFromFirestore();
+        } catch (error) {
+          console.error("Error deleting note:", error);
+          alert("Failed to delete note. Please try again.");
+        }
+      });
+  
+      // Existing menu event listeners
+      const editBtn = noteElement.querySelector(".edit-btn");
+      const deleteBtn = noteElement.querySelector(".delete-btn");
+      const menuIcon = noteElement.querySelector(".menu-icon");
+      
+      if (editBtn) editBtn.addEventListener("click", () => startEditNote(note.id));
+      if (deleteBtn) deleteBtn.addEventListener("click", () => deleteNote(note.id));
+      if (menuIcon) menuIcon.addEventListener("click", showMenu);
+      
+      notesContainer.insertBefore(noteElement, addBox.nextSibling);
+    });
+  
+  }
+  async function loadNotesFromFirestore() {
+    if (!currentUser) return;
+  
+    const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "notes"));
+    notes = [];
+    querySnapshot.forEach(docSnap => {
+      notes.push({ ...docSnap.data(), id: docSnap.id });
+    });
+    showNotes();
+  }
+  
+  
+  
+  window.updateNote = function (noteId, title, desc) {
+    isUpdate = true;
+    updateId = noteId;
+    addBox.click();
+    titleTag.value = title;
+    descTag.value = desc;
+    popupTitle.innerText = "Update your note";
+    addBtn.innerText = "Update Note";
+  };
+  function startEditNote(noteId) {
+    const noteToEdit = notes.find(note => note.id === noteId);
+    if (!noteToEdit) return;
+  
+    isUpdate = true;
+    updateId = noteId;
+    if (titleTag) titleTag.value = noteToEdit.title || '';
+    if (descTag) descTag.value = noteToEdit.description || '';
+    if (popupTitle) popupTitle.textContent = "Update your note";
+    if (addNoteBtn) addNoteBtn.textContent = "Update Note";
+    popUpBox?.classList.add("show");
+    titleTag?.focus();
+  }
+  window.showMenu = function (elem) {
+    const menu = elem.nextElementSibling;
+    menu.classList.toggle("show");
+    document.addEventListener("click", function onClickOutside(e) {
+      if (!menu.contains(e.target) && e.target !== elem) {
+        menu.classList.remove("show");
+        document.removeEventListener("click", onClickOutside);
+      }
+    });
+  };
+  
+ 
+});
+
+//settings script
+
+// Background selection
+const bgOptions = document.querySelectorAll('.bg-option');
+let currentBg = 'default';
+
+
+bgOptions.forEach(option => {
+  option.addEventListener('click', async() => {
+    bgOptions.forEach(opt => opt.classList.remove('active'));
+    option.classList.add('active');
+    currentBg = option.dataset.bg;
+    await updateBackground();
+    await savePreferences();
+  });
+});
+
+async function updateBackground() {
+  const user = auth.currentUser;
+  if(!user){
+	  alert("You must be logged in to change the background");
+	  return;
+  }
+  const bgVar = `--bg-image-${currentBg}`;
+  document.documentElement.style.setProperty('--bg-image', `var(${bgVar})`);
+}
+
+// Save preferences to localStorage
+async function savePreferences() {
+  if(!user)
+	  return;
+  try{
+  const bg = doc(db, "users", user.uid, "backgrounds");
+  await setDoc(bg, {background: currentBg},
+  {merge:true});
+  } catch(error){
+	  console.error("Saving: ", error);
+  }
+
+}
+// Load saved preferences
+async function loadPreferences() {
+  const user = auth.currentUser;
+  
+
+	  const bg =  doc(db, "users", user.uid, "background");
+	  const querySnapshot = await getDoc(bg);
+	  
+	  if (querySnapshot.exists()) {
+      currentBg = docSnap.data().background || 'default';
+	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
+      if (activeOption) {
+        activeOption.classList.add('active');
+      }
+      updateBackground();
+    }
+  
+
+}
+// Initialize
+loadPreferences();

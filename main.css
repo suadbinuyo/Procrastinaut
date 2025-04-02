@@ -1,4 +1,4 @@
-/* @import './base.css'; */
+
 
 
 *{
@@ -225,8 +225,8 @@
 
 
 .main{
-  background: linear-gradient(135deg, #153677, #4e085f); 
-  /* background-image: url('/images/Background.png'); */
+  /* background: linear-gradient(135deg, #153677, #4e085f);  */
+  background-image: url('images/Background.png');
   background-size: cover;
 
 }
@@ -334,6 +334,12 @@
 /*mobile responsive*/
 
 @media screen and (max-width: 768px){
+
+  #navLogo {
+    font-size: 1.8rem;
+    margin-left: -50px;
+    padding-right: 30px;
+  }
   .mainContainer{
     display: grid;
     grid-template-columns: auto;
@@ -343,6 +349,9 @@
     margin: 0 auto;
     height: 90vh;
   }
+
+  
+
 
   .mainContent{
     text-align: center;
