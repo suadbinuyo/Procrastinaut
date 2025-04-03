@@ -4,6 +4,17 @@
     } 
 
 
+    :root {
+
+        --bg-image-default: url('images/Background.png');
+        --bg-image-spaceMountain: url('images/moon_Mountain.png');
+        --bg-image-spaceship: url('images/sun_in_space.jpg');
+      
+        
+        /* Current background */
+        --bg-image: var(--bg-image-default);
+      }
+
 
 
 /*.parallax{
@@ -26,7 +37,7 @@ box-sizing: border-box;
 
 
 body{
-background-image: url("images/Background.png");
+background-image: var(--bg-image);
 background-color: #3949AB;
 background-attachment: fixed;
 background-position: center;

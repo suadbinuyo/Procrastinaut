@@ -3,6 +3,17 @@
   src: url('Mokoto-Regular.ttf');
   } 
 
+  :root {
+
+    --bg-image-default: url('images/Background.png');
+    --bg-image-spaceMountain: url('images/moon_Mountain.png');
+    --bg-image-spaceship: url('images/sun_in_space.jpg');
+  
+    
+    /* Current background */
+    --bg-image: var(--bg-image-default);
+  }
+
 
 
 *{
@@ -17,7 +28,9 @@
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(135deg, #153677, #4e085f);
-  background-image: url('images/Background.png');
+  background-image: var(--bg-image);
+  background-repeat: no-repeat;
+  background-size: cover;
   padding: 10px;
 
 }

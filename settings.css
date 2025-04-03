@@ -15,8 +15,8 @@ font-family: 'mokoto', sans-serif;
 :root {
 
 --bg-image-default: url('images/Background.png');
---bg-image-spaceMountain: url('images/spaceMountain.jpg');
---bg-image-spaceship: url('images/spaceship.jpg');
+--bg-image-spaceMountain: url('images/moon_Mountain.png');
+--bg-image-spaceship: url('images/sun_in_space.jpg');
 
 
 /* Current background */
@@ -38,14 +38,40 @@ gap: 10px;
 margin-top: 10px;
 }
 
+
 .bg-option {
-padding: 5px 10px;
-border: 1px solid #ccc;
+padding: 12px 28px;
+/* background-color: ; */
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+width: 33%;
+border: 3px solid #ccc;
 border-radius: 4px;
 cursor: pointer;
+}
+.bg-options .button:hover{
+background-color: gray;
+
 }
 
 .bg-option.active {
 background: var(--accent-color);
 color: white;
+}
+
+.preview-container{
+display: flex;
+gap: 10px;
+margin-top: 15px;
+}
+
+.preview-image{
+flex: 1;
+border: 3px solid #ccc;
+border-radius: 8px;
+overflow: hidden;
+}
+
+.preview-image img{
+width: 100%;
+
 }

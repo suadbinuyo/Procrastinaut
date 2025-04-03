@@ -1,7 +1,7 @@
 import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteDoc, query, orderBy, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
  
 
@@ -39,6 +39,8 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, quer
 
   if (user){
     console.log("user logged in: ", user);
+    showPopup("Successfully logged in!");
+
 
     logoutButton.style.display = "block";
     loginButton.style.display ="none";
@@ -47,6 +49,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, quer
   }
   else{
     console.log("user logged out");
+    showPopup("Successfully logged out!");
      logoutButton.style.display = "none";
      loginButton.style.display ="block";
      signup.style.display = "block";
@@ -55,6 +58,49 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, quer
  
 
  });
+
+
+
+ function showPopup(message){
+  let popup = document.createElement("div");
+  popup.style.position = "fixed";
+  popup.style.top = "20px";
+  popup.style.right = "20px";
+  popup.style.backgroundColor = "#634a95";
+  popup.style.color = "white";
+  popup.style.padding = "15px 20px";
+  popup.style.borderRadius = "8px";
+  popup.style.boxShadow = "0px 4px 6px rgba (0,0,0,0.1)";
+  popup.style.fontSize = "16px";
+  popup.style.opacity = "0";
+  popup.style.transform = "translateY(-20px)";
+  popup.style.transition = "opacity 0.3 ease-out";
+  popup.style.zIndex = "1000";
+  
+
+
+
+  popup.innerHTML = message + '<span style="margin-left: 15px; cursor:pointer; font-weight: bold;"  class="close-btn" onclick="this.parentElement.remove()">&times;</span>';
+
+
+  document.body.appendChild(popup);
+
+  setTimeout(() =>{
+    popup.style.opacity = "1";
+    popup.style.transform = "translateY(0)";
+  }, 100);
+
+
+  setTimeout(()=>{ // hide after 3 sec
+    popup.style.opacity = "1";
+    popup.style.transform = "translateY(-20px)";
+
+    setTimeout(()=> popup.remove(), 300); // remove from html
+  }, 3000);
+
+ }
+
+
   
   
    document.addEventListener("DOMContentLoaded", () =>{
@@ -86,6 +132,7 @@ signupForm.addEventListener("submit", (e) =>{
     
 
       console.log("user signed up and saved in firestore");
+      showPopup("Successfully logged in!");
     
     
       const modal = document.querySelector("#signup-modal");
@@ -145,7 +192,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     async function addTask() {
         const user = auth.currentUser;
         if(!user){
-          alert("You must be logged in to add tasks!");
+          showPopup("You must be logged in to add tasks!");
           return;
         }
 
@@ -177,7 +224,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     async function loadTasks() {
       const user = auth.currentUser;
       if(!user){
-        listContainer.innerHTML = "<p>Please log in to see your tasks.</p><button class='modal-btn'>Log in</button>";
         return;
       }
 
@@ -242,7 +288,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         loadTasks();
       }
       else{
-        listContainer.innerHTML = "<p>Please log in to see your tasks.</p><button class='modal-btn'>Log in</button>";
+        showPopup("Please log in to see your tasks");
       }
     });
 
@@ -312,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!noteTitle && !noteDesc) return;
   
     if (!currentUser) {
-      alert("Please log in to save notes.");
+      showPopup("Please log in to save notes.");
       return;
     }
   
@@ -407,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         try {
           if (!currentUser) {
-            alert("Please log in to delete notes.");
+            showPopup("Please log in to delete notes.");
             return;
           }
           
@@ -436,10 +482,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
   }
+
+
   async function loadNotesFromFirestore() {
     if (!currentUser) return;
   
-    const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "notes"));
+    const notesRef = (collection(db, "users", currentUser.uid, "notes"));
+   const querySnapshot = await getDocs(query(notesRef, orderBy("date", "asc")));
     notes = [];
     querySnapshot.forEach(docSnap => {
       notes.push({ ...docSnap.data(), id: docSnap.id });
@@ -519,11 +568,11 @@ bgOptions.forEach(option => {
 async function updateBackground() {
   console.log("2");
   const user = auth.currentUser;
-  if(!user){
+ /* if(!user){
 	  console.log("3");
 	  alert("You must be logged in to change the background");
 	  return;
-  }
+  }*/
   console.log("4");
   const bgVar = `--bg-image-${currentBg}`;
   document.documentElement.style.setProperty('--bg-image', `var(${bgVar})`);
@@ -534,7 +583,7 @@ async function savePreferences() {
   const user = auth.currentUser;
 console.log("5");
   if(!user){
-	  console.log("5.5");
+	  alert("you must be logged in to change the background!")
 	  return;}
     console.log("user state", user);
   
@@ -558,17 +607,18 @@ async function loadPreferences() {
 
   if (!user){
     console.log("9.5");
+    return;
   }
   
 
-	  const bg =  doc(db, "users", user.uid, "settings","background");
+	  const bg =  doc(db, "users", user.uid, "settings","backgrounds");
     console.log("9.75")
 
     try {
-      const querySnapshot = await getDocs(bg);
+      const querySnapshot = await getDoc(bg);
 	  console.log("10");
 	  if (querySnapshot.exists()) {
-      currentBg = docSnap.data().background || 'default';
+      currentBg = querySnapshot.data().background || 'default';
 	  console.log("11");
 	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
       if (activeOption) {
@@ -577,11 +627,13 @@ async function loadPreferences() {
       }
       updateBackground();
 	  console.log("13");
+    }else{
+      console.log("document doesn't exist");
     }
 	  
     
     }catch(error){
-      console.log("error: ", error);
+      console.error("error: ", error);
     }
   
 

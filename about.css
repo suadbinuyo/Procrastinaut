@@ -1,0 +1,93 @@
+@font-face {
+    font-family: 'mokoto'; 
+    src: url('Mokoto-Regular.ttf');
+    } 
+    :root {
+
+        --bg-image-default: url('images/Background.png');
+        --bg-image-spaceMountain: url('images/moon_Mountain.png');
+        --bg-image-spaceship: url('images/sun_in_space.jpg');
+      
+        
+        /* Current background */
+        --bg-image: var(--bg-image-default);
+      }
+
+
+
+.parallax{
+background-image: url("images/space.jpg");
+min-height:500px;
+background-attachment: fixed;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+
+
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'mokoto', comic-sans;	
+color: white;
+}
+
+
+body{
+background-image: var(--bg-image);
+background-color: #3949AB;
+background-attachment: fixed;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+
+}
+h1{
+position: center;
+
+
+}
+h2{
+font-size: 26px;
+
+
+
+}
+
+p{
+font-size: 20px;
+overflow-y: auto;
+word-break: break-all;
+text-wrap: pretty;
+
+}
+
+
+h3{
+font-size:24px;
+
+
+}
+
+
+.container{
+background-image: url('images/space.jpg');
+background-attachment: fixed;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+width: 100%;
+max-width: 600px;
+background-color: #fff;
+margin: 100px auto 20px;
+padding: 40px 30px 70px;
+border-radius: 10px;
+}
+
+img{
+border-radius: 20px;
+height: 150px;
+width: 150px;
+
+}	

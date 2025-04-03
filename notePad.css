@@ -3,11 +3,15 @@
     src: url('Mokoto-Regular.ttf');
 } 
 
-:root{
---base-background-image:url('Background.png');
---base-color: #7B68CD;
---text-color: 
+:root {
 
+  --bg-image-default: url('images/Background.png');
+  --bg-image-spaceMountain: url('images/moon_Mountain.png');
+  --bg-image-spaceship: url('images/sun_in_space.jpg');
+
+  
+  /* Current background */
+  --bg-image: var(--bg-image-default);
 }
 
 
@@ -20,8 +24,10 @@ color: #4fe4ff;
     }
 
 body {
-background-image: url('images/Background.png');
+background-image: var(--bg-image);
 background-repeat: no-repeat;
+background-color: #7B68CD;
+background-size: cover;
 background-color: #7B68CD;
 }
 
@@ -290,92 +296,6 @@ height: 150px;
 resize: none;
 }
 
-.navbar{
-background: #131313; /*navbar bgc*/
-height:80px;
-display: flex;
-justify-content: center;
-align-items: center;
-font-size: 1.2rem;
-position: sticky;
-top: 0;
-z-index: 999;
-}
-
-
-.navbarContainer{
-display: flex;
-justify-content: space-between;
-height: 80px;
-z-index: 1;
-width: 100%;
-max-width: 1300px;
-margin: 0 auto;
-padding: 0 50px;
-
-}
-
-#navLogo{
-background-color: #D8BFD8 ;
-background: linear-gradient(135deg, #617eb8, #9b5daa);
-/* background-image: linear-gradient(to top, #9370DB 0%, #C8A2C8 100% ); */
-background-size: 100%;
--webkit-background-clip: text;
--moz-background-clip: text;
--webkit-text-fill-color: transparent;
--moz-text-fill-color: transparent;
-display: flex;
-align-items: center;
-cursor: pointer;
-text-decoration: none;
-font-size: 2rem	;
-
-}
-
-
-.navbarMenu{
-display: flex;
-align-items: center;
-list-style: none;
-text-align: center;
-}
-
-.navbarItem{
-height: 80px;
-padding: 0 15px;
-white-space: nowrap;
-}
-
-.navbarLinks{
-color: #fff;
-display: flex;
-align-items: center;
-justify-content: center;
-text-decoration: none;
-padding: 0 1 rem;
-height: 100%;
-
-
-}
-
-.navbarBtn{
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 0 1rem;
-width: 100%;
-
-}
-.button:hover{
-background: #634a95;
-transition: all 0.3s ease;
-
-}
-
-.navbarLinks:hover{
-color: #9370DB;
-transition: all 0.3 ease;
-}
 
 .action-buttons {
     display: flex;
