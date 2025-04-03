@@ -1,7 +1,7 @@
 import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteDoc, query, orderBy, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
  
 
@@ -436,10 +436,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
   }
+
+
   async function loadNotesFromFirestore() {
     if (!currentUser) return;
   
-    const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "notes"));
+    const notesRef = (collection(db, "users", currentUser.uid, "notes"));
+   const querySnapshot = await getDocs(query(notesRef, orderBy("date", "desc")));
     notes = [];
     querySnapshot.forEach(docSnap => {
       notes.push({ ...docSnap.data(), id: docSnap.id });
@@ -519,11 +522,11 @@ bgOptions.forEach(option => {
 async function updateBackground() {
   console.log("2");
   const user = auth.currentUser;
-  if(!user){
+ /* if(!user){
 	  console.log("3");
 	  alert("You must be logged in to change the background");
 	  return;
-  }
+  }*/
   console.log("4");
   const bgVar = `--bg-image-${currentBg}`;
   document.documentElement.style.setProperty('--bg-image', `var(${bgVar})`);
@@ -534,7 +537,7 @@ async function savePreferences() {
   const user = auth.currentUser;
 console.log("5");
   if(!user){
-	  console.log("5.5");
+	  alert("you must be logged in to change the background!")
 	  return;}
     console.log("user state", user);
   
@@ -558,17 +561,18 @@ async function loadPreferences() {
 
   if (!user){
     console.log("9.5");
+    return;
   }
   
 
-	  const bg =  doc(db, "users", user.uid, "settings","background");
+	  const bg =  doc(db, "users", user.uid, "settings","backgrounds");
     console.log("9.75")
 
     try {
-      const querySnapshot = await getDocs(bg);
+      const querySnapshot = await getDoc(bg);
 	  console.log("10");
 	  if (querySnapshot.exists()) {
-      currentBg = docSnap.data().background || 'default';
+      currentBg = querySnapshot.data().background || 'default';
 	  console.log("11");
 	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
       if (activeOption) {
@@ -577,11 +581,13 @@ async function loadPreferences() {
       }
       updateBackground();
 	  console.log("13");
+    }else{
+      console.log("document doesn't exist");
     }
 	  
     
     }catch(error){
-      console.log("error: ", error);
+      console.error("error: ", error);
     }
   
 
