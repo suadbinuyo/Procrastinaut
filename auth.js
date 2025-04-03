@@ -563,7 +563,9 @@ async function loadPreferences() {
 
 	  const bg =  doc(db, "users", user.uid, "settings","background");
     console.log("9.75")
-	  const querySnapshot = await getDoc(bg);
+
+    try {
+      const querySnapshot = await getDocs(bg);
 	  console.log("10");
 	  if (querySnapshot.exists()) {
       currentBg = docSnap.data().background || 'default';
@@ -575,6 +577,11 @@ async function loadPreferences() {
       }
       updateBackground();
 	  console.log("13");
+    }
+	  
+    
+    }catch(error){
+      console.log("error: ", error);
     }
   
 
