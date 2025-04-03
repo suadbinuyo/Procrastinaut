@@ -6,8 +6,8 @@
 :root {
 
   --bg-image-default: url('images/Background.png');
-  --bg-image-spaceMountain: url('images/spaceMountain.jpg');
-  --bg-image-spaceship: url('images/spaceship.jpg');
+  --bg-image-spaceMountain: url('images/moon_Mountain.png');
+  --bg-image-spaceship: url('images/sun_in_space.jpg');
 
   
   /* Current background */
@@ -20,13 +20,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-	font-family: 'mokoto', comic-sans;	
-	color: #4fe4ff;
+	  font-family: 'mokoto', comic-sans;	
+	  color: #4fe4ff;
 		}
 
 body {
     background-image: var(--bg-image);
+    background-size: cover;
 	background-repeat: no-repeat;
+  background-position: center;
 	background-color: #7B68CD;
 }
 
@@ -211,7 +213,7 @@ background-color: #8b0000;}
 
 .popup .content {
     border-radius: 5px;
-	background-image: url('C:/Users/Áine/Downloads/Procrastinaut-main/Procrastinaut-main/images/Container.png') ;
+	background-image: url('images/Container.png') ;
 	/*background-color: #005361;*/
 	
 	overflow-y: auto;

@@ -1,7 +1,7 @@
 import { initializeApp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, deleteDoc, query, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteDoc, query, orderBy, where, serverTimestamp } from  "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
  
 
@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       li.textContent = taskTest;
 
 
+      // tasks that have been completed 
       listContainer.addEventListener("click", function(e){
         if(e.target.tagName === "LI"){
             e.target.classList.toggle("checked");
@@ -435,10 +436,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
   }
+
+
   async function loadNotesFromFirestore() {
     if (!currentUser) return;
   
-    const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "notes"));
+    const notesRef = (collection(db, "users", currentUser.uid, "notes"));
+   const querySnapshot = await getDocs(query(notesRef, orderBy("date", "asc")));
     notes = [];
     querySnapshot.forEach(docSnap => {
       notes.push({ ...docSnap.data(), id: docSnap.id });
@@ -490,6 +494,19 @@ document.addEventListener("DOMContentLoaded", () => {
 const bgOptions = document.querySelectorAll('.bg-option');
 let currentBg = 'default';
 
+auth.onAuthStateChanged(async (user) => {
+  console.log("Auth state changed, user:", user);
+  if (user) {
+    console.log("9 - User is logged in");
+    await loadPreferences();
+  } else {
+    console.log("No user logged in");
+    // Set default background if no user
+    currentBg = 'default';
+    updateBackground();
+  }
+});
+
 
 bgOptions.forEach(option => {
 	console.log("1");
@@ -505,11 +522,11 @@ bgOptions.forEach(option => {
 async function updateBackground() {
   console.log("2");
   const user = auth.currentUser;
-  if(!user){
+ /* if(!user){
 	  console.log("3");
 	  alert("You must be logged in to change the background");
 	  return;
-  }
+  }*/
   console.log("4");
   const bgVar = `--bg-image-${currentBg}`;
   document.documentElement.style.setProperty('--bg-image', `var(${bgVar})`);
@@ -517,15 +534,18 @@ async function updateBackground() {
 
 // Save preferences to localStorage
 async function savePreferences() {
+  const user = auth.currentUser;
 console.log("5");
-  if(!user)
-	  console.log("5.5");
-	  return;
+  if(!user){
+	  alert("you must be logged in to change the background!")
+	  return;}
+    console.log("user state", user);
+  
   console.log("6");
   try{
-  const bg = doc(db, "users", user.uid, "backgrounds");
+  const bg = doc(db, "users", user.uid, "settings", "backgrounds");
   await setDoc(bg, {background: currentBg},
-  conosole.log("7");
+  
   {merge:true});
   console.log("8");
   } catch(error){
@@ -533,17 +553,26 @@ console.log("5");
   }
 
 }
+
 // Load saved preferences
 async function loadPreferences() {
 	console.log("9");
   const user = auth.currentUser;
+
+  if (!user){
+    console.log("9.5");
+    return;
+  }
   
 
-	  const bg =  doc(db, "users", user.uid, "background");
-	  const querySnapshot = await getDoc(bg);
+	  const bg =  doc(db, "users", user.uid, "settings","backgrounds");
+    console.log("9.75")
+
+    try {
+      const querySnapshot = await getDoc(bg);
 	  console.log("10");
 	  if (querySnapshot.exists()) {
-      currentBg = docSnap.data().background || 'default';
+      currentBg = querySnapshot.data().background || 'default';
 	  console.log("11");
 	   const activeOption = document.querySelector(`[data-bg="${currentBg}"]`);
       if (activeOption) {
@@ -552,9 +581,18 @@ async function loadPreferences() {
       }
       updateBackground();
 	  console.log("13");
+    }else{
+      console.log("document doesn't exist");
+    }
+	  
+    
+    }catch(error){
+      console.error("error: ", error);
     }
   
 
 }
+
+console.log("14")
 // Initialize
-loadPreferences();
+//loadPreferences();

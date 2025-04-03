@@ -17,8 +17,8 @@
 :root {
 
   --bg-image-default: url('images/Background.png');
-  --bg-image-spaceMountain: url('images/spaceMountain.jpg');
-  --bg-image-spaceship: url('images/spaceship.jpg');
+  --bg-image-spaceMountain: url('images/moon_Mountain.png');
+  --bg-image-spaceship: url('images/sun_in_space.jpg');
 
   
   /* Current background */
