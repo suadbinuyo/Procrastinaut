@@ -119,6 +119,14 @@ signupForm.addEventListener("submit", (e) =>{
   const email = signupForm["signup-email"].value
   const password = signupForm["signup-password"].value
 
+
+  if (password.length < 6){ // if pass len < 6
+    showPopup("Password must be at least 6 characters.\nPlease try again");
+  }
+  if (email.slice(-4,)!= ".com"){
+    showPopup("Please enter valid email!");
+  }
+
   // sign up the user
   
   createUserWithEmailAndPassword(auth, email, password).then(async cred =>{
@@ -288,7 +296,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         loadTasks();
       }
       else{
-        showPopup("Please log in to see your tasks");
+        //showPopup("Please log in to see your tasks");
       }
     });
 
