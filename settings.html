@@ -8,57 +8,7 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbarContainer">
-          <a href="#" id="navLogo">PROCRASTINAUT</a>
-          <div class="navbarToggle" id="mobile-menu">
-            <span class="bar"></span> <span class="bar"></span>
-            <span class="bar"></span>
-          </div>
-          <ul class="navbarMenu">
-            <li class="navbarItem">
-              <a href="./index.html" class="navbarLinks">Home</a>
-            </li>
-  
-            <li class="navbarItem">
-              <a href="./todolist.html" class="navbarLinks">To Do List</a>
-            </li>
-  
-            <li class="navbarItem">
-              <a href="./calendar.html" class="navbarLinks">Calendar</a>
-            </li>
-  
-            <li class="navbarItem">
-              <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
-            </li>
-            
-            <li class="navbarItem">
-              <a href="./notePad.html" class="navbarLinks">Note Pad</a>
-            </li>
-  
-            <li class="navbarItem">
-              <a href="./about.html" class="navbarLinks">About Us</a>
-            </li>
-
-            <li class="navbarItem">
-                <a href="./settings.html" class="navbarLinks">About Us</a>
-              </li>
-  
-            <li class="navbarBtn logged-out">
-              <a href="#" class="button open-modal" data-modal="signup" id="signup-btn">Sign up</a>
-            </li>
-  
-            <li class="navbarBtn logged-out">
-              <a href="#" class="button open-modal" data-modal="login" id="login-btn">Login</a>
-            </li>
-  
-            <li class="navbarBtn logged-in">
-              <a href="#" class="button logout-button" id="logout">Logout</a>
-            </li>
-  
-          </ul>
-        </div>
-      </nav>
+  <div id="navbar-container"></div>
 
 	<div class="background-selector">
     <h4>Choose Background:</h4>
@@ -73,6 +23,15 @@
 	<!--<button id="theme-switch" >
 	<img src = "images/moon.png" class="dark-icon">
 	<img src = "images/sun.png"  class="light-icon"></button>-->
+
+  <script>
+    // loads navbar from navbar.html + puts data in navbar-container
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+        });
+  </script>
 
 		
 	<script  type="module" src="auth.js"></script>
