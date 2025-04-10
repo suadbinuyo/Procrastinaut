@@ -5,7 +5,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteD
 
  
 
- const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBdDUUJKgBgSyV6bL9Qrw93BWzjEODZjtI",
   authDomain: "first-project-dc60b.firebaseapp.com",
   projectId: "first-project-dc60b",
@@ -13,14 +13,13 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteD
   messagingSenderId: "692391873078",
   appId: "1:692391873078:web:12ec161a69cbee938a2697",
   measurementId: "G-8WM43P61Z6"
-};
- 
- // Initialize Firebase
- const app = initializeApp(firebaseConfig);
+}
 
- //make auth and firestore references
- const auth = getAuth(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app)
  const db = getFirestore(app);
+ const auth = getAuth(app);
 
  // initialising app stuff
 
@@ -38,7 +37,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteD
 
 
   if (user){
-    console.log("user logged in: ", user);
+    //console.log("user logged in: ", user);
     showPopup("Successfully logged in!");
 
 
@@ -48,7 +47,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteD
     
   }
   else{
-    console.log("user logged out");
+    //console.log("user logged out");
     showPopup("Successfully logged out!");
      logoutButton.style.display = "none";
      loginButton.style.display ="block";
@@ -96,7 +95,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, deleteD
     popup.style.transform = "translateY(-20px)";
 
     setTimeout(()=> popup.remove(), 300); // remove from html
-  }, 3000);
+  }, 1000);
 
  }
 
@@ -158,7 +157,7 @@ signupForm.addEventListener("submit", (e) =>{
    e.preventDefault();
    
    signOut(auth).then(()=>{
-     console.log("User signed out");
+     showPopup("Successfully logged out !");
    });
   
  });
@@ -189,6 +188,10 @@ signupForm.addEventListener("submit", (e) =>{
    });
 
 
+   
+     
+
+
     //storing info from todolist to database
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -206,7 +209,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
         if(taskInput.value.trim()=== ""){
-          alert("Please add a task !");
+          showPopup("Please add a task !");
           return;
         }
 
@@ -219,11 +222,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
           });
 
 
-          console.log("task added successfully");
+          showPopup("task added successfully");
           taskInput.value = ""; // clear input after adding task
           loadTasks(); // loads taks 
         } catch (error){
-          console.error("error adding task:", error);
+          showPopup("Error loading tasks. Please try again");
         }
       
     }
@@ -243,7 +246,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
           createTaskElement(doc.id, doc.data().task);
         });
       } catch (error){
-        console.error("Error fetching tasks: ", error);
+        showPopup("Error loading tasks. Please try again!");
       }
       
     }
@@ -277,13 +280,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
           await deleteDoc(doc(db, "users", user.uid, "tasks", taskId));
-          console.log("Task deleted successfully");
+          showPopup("Task deleted successfully");
           loadTasks();
 
 
 
         } catch (error){
-          console.error("error deleting task: ", error);
+          showPopup("Error deleting task. Please try again !");
         }
       });
 
@@ -406,18 +409,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const notesContainer = document.querySelector(".wrapper");
     if (!notesContainer) return;
   
-    // Clear existing notes except the add-box
+    // clear existing notes except the add-box
     const existingNotes = notesContainer.querySelectorAll(".note");
     existingNotes.forEach(note => note.remove());
   
-    // Sort notes by creation date (newest first)
+    // sort notes by creation date (newest first)
     const sortedNotes = [...notes].sort((a, b) => {
       const aTime = a.createdAt?.seconds || 0;
       const bTime = b.createdAt?.seconds || 0;
       return bTime - aTime;
     });
   
-    // Add notes to DOM
+    // add notes to DOM
     sortedNotes.forEach(note => {
       const noteElement = document.createElement("li");
       noteElement.className = "note";
@@ -436,22 +439,22 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
   
-      // Create action buttons container
+      // create action buttons container
       const actionButtons = noteElement.querySelector(".action-buttons");
       
-      // Add edit button (✎)
+      // add edit button
       const editSpan = document.createElement("span");
       editSpan.innerHTML = "✎";
       editSpan.className = "edit-note";
       actionButtons.appendChild(editSpan);
   
-      // Add delete button (×)
+      // add delete button
       const deleteSpan = document.createElement("span");
       deleteSpan.innerHTML = "×";
       deleteSpan.className = "delete-note";
       actionButtons.appendChild(deleteSpan);
   
-      // Add event listeners
+      // add event listeners
       editSpan.addEventListener("click", (e) => {
         e.stopPropagation();
         startEditNote(note.id);
@@ -477,7 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
   
-      // Existing menu event listeners
+      // existing menu event listeners
       const editBtn = noteElement.querySelector(".edit-btn");
       const deleteBtn = noteElement.querySelector(".delete-btn");
       const menuIcon = noteElement.querySelector(".menu-icon");

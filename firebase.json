@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": ".",
+    "site":"procrastinaut",
     "ignore": [
       "firebase.json",
       "**/node_modules/**"

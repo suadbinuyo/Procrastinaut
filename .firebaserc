@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "first-project-dc60b"
-  }
+    "default": "first-project-dc60b",
+    "first": "first-project-dc60b"
+  },
+  "targets": {},
+  "etags": {}
 }
