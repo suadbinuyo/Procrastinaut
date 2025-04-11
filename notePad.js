@@ -1,3 +1,4 @@
+
 const addBox = document.querySelector(".add-box");
 const popUpBox = document.querySelector(".popup-box");
 const closeIcon = document.querySelector("header i");
@@ -137,3 +138,4 @@ menu.addEventListener('click', function(){
     menu.classList.toggle('is-active');
     menuLinks.classList.toggle('active');
 });
+

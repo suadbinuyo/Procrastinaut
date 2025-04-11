@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 
+
 <html lang="en">
   <head>
     
+
+
 
     <meta charset="UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Procrastinaut !</title>
+
     <link rel= "stylesheet" href="main.css">
+
   </head>
   <body>
     
     <nav class="navbar">
       <div class="navbarContainer">
+
         <a href="./index.html" id="navLogo">PROCRASTINAUT</a>
+
         <div class="navbarToggle" id="mobile-menu">
           <span class="bar"></span> <span class="bar"></span>
           <span class="bar"></span>
@@ -29,9 +36,11 @@
           </li>
 
           <li class="navbarItem">
+
             <a href="http://localhost:8080/" class="navbarLinks">Calendar</a>
           </li>
         
+
 
           <li class="navbarItem">
             <a href="./pomodoro.html" class="navbarLinks">Pomodoro Timer</a>
@@ -44,6 +53,7 @@
           <li class="navbarItem">
             <a href="./about.html" class="navbarLinks">About Us</a>
           </li>
+
 
           <li class="navbarItem">
             <a href="./settings.html" class="navbarLinks">Settings</a>
@@ -60,11 +70,13 @@
 
           <li class="navbarBtn logged-in">
             <a href="#" class="button logout-button" id="logout">Logout</a>
+
           </li>
 
         </ul>
       </div>
     </nav>
+
 
    
    <!--Sign up modal-->
@@ -105,6 +117,7 @@
       </div>
     </div>
 
+
 <!--Images-->
 
     <div class="main">
@@ -112,7 +125,9 @@
         <div class="mainContent">
           <h1>PROCRASTINAUT</h1>
           <p>Launch into productivity!</p>
+
           <button class="mainBtn open-modal" data-modal="signup"><a href="#" >Get Started</a></button>
+
         </div>
         <div class="mainImgContainer"></div>
         <img src="images/astroguy.png" alt="Astronaut" id="Main" class="mainImg">
@@ -120,6 +135,7 @@
       </div>
     </div>
     <div id="app"></div>
+
     <script type="module" src="auth.js"></script>
     <script type="module" src="main.js"></script>
   </body>
@@ -185,4 +201,6 @@ menu.addEventListener('click', function(){
     menuLinks.classList.toggle('active');
 });
 </script>
+
+
 </html>
